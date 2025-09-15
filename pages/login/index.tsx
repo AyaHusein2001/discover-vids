@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import styles from "../../styles/Login.module.css";
 import { useRouter } from "next/router";
 import { magic } from "@/lib/magic-client";
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [usrMsg, setUsrMsg] = useState("");
@@ -33,32 +34,41 @@ const Login = () => {
   const handleLoginWithEmail = async (e:any) => {
     e.preventDefault();
     if (email) {
-      if (email==="aya.ahmed2001.aa@gmail.com")
-      {
         
-        try {
-          setIsLoading(true);
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          //@ts-expect-error
-          const did = await magic.auth.loginWithEmailOTP({ email, showUI: true });
+      try {
+        setIsLoading(true);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-expect-error
+        const did = await magic.auth.loginWithEmailOTP({ email, showUI: true });
 
-          console.log(`DID Token: ${did}`);
+        console.log(`DID Token: ${did}`);
 
-          if (did) {
-            //it is wrong to set loading to false here , as the route needs some seconds
-            // to take place , so we need to wait for that , set the loading to false when the route completes only
-            // setIsLoading(false);
+        if (did) {
+          //it is wrong to set loading to false here , as the route needs some seconds
+          // to take place , so we need to wait for that , set the loading to false when the route completes only
+          const response = await fetch("/api/login", {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${did}`,
+            },
+          });
+          const data = await response.json();
+          console.log("🚀 ~ handleLoginWithEmail ~ data:", data);
+          if (data?.error) {
+            setIsLoading(false);
+            setUsrMsg(data.error);
+          }
+          else {
             router.push("/");
           }
-        } catch (error) {
-          setIsLoading(false);
-          console.log("🚀 ~ handleLoginWithEmail ~ error:", error);
-          setUsrMsg("Something went wrong logging in");
         }
-      }
-      else {
+      } catch (error) {
+        setIsLoading(false);
+        console.log("🚀 ~ handleLoginWithEmail ~ error:", error);
         setUsrMsg("Something went wrong logging in");
       }
+      
+     
     }
     else {
       setUsrMsg("Please enter a valid email address");

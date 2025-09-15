@@ -13,6 +13,8 @@ const NavBar = () => {
       }
       try {
         const { email } = await magic.user.getInfo();
+        const didToken = await magic.user.getIdToken();
+        console.log("🚀 ~ getEmail ~ didToken:", {didToken});
         if (email) {
           setUsrEmail(email as string);
         }

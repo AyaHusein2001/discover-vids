@@ -28,8 +28,6 @@ export default function Home({disneyVideos, productivityVideos, travelVideos,pop
   productivityVideos: video[], 
   travelVideos: video[],
   popularVideos: video[]}) {
-
-
   return (
     <div className={styles.container}>
       <Head>
@@ -53,15 +51,3 @@ export default function Home({disneyVideos, productivityVideos, travelVideos,pop
     </div>
   );
 }
-
-// import React from 'react'
-
-// const index = () => {
-//   return (
-//     <div>
-      
-//     </div>
-//   )
-// }
-
-// export default index

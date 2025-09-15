@@ -5,4 +5,3 @@ const createMagic = () => {
 };
 
 export const magic = createMagic();
-console.log("🚀 ~ magic back:", magic);
