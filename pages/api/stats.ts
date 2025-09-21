@@ -1,5 +1,5 @@
 import { findVideoIdByUser, insertStats, updateStats } from "@/lib/db/hasura";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import { verifyToken } from "@/lib/utils";
 import type { NextApiRequest, NextApiResponse } from "next";
  
 export default async function handler(
@@ -15,9 +15,8 @@ export default async function handler(
       
     const {videoId} = req.method === "POST" ? req.body : req.query;
     if (videoId) {
-      const decodedToken = jwt.verify(token, process.env.JWT_SECRET as string);
-      // const videoId = req.query.videoId as string;
-      const userId = ((  decodedToken as JwtPayload)?.issuer ?? "");
+
+      const userId = verifyToken(token);
       console.log("🚀 ~ handler ~ userId:", userId);
       const findVideo = await findVideoIdByUser(token,
         userId,videoId);
@@ -43,7 +42,7 @@ export default async function handler(
           res.status(200).json( findVideo );
         }
         else {
-          res.status(404).json({ message: "Video not found" });
+          res.status(200).json({ message: "Video not found" });
 
         }
          

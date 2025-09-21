@@ -112,5 +112,19 @@ export async function insertStats(token: string
 }
 
 
+export async function watchedVideos(token: string ,userId : string) {
+  const operationsDoc = `
+  query watchedVideos($userId: String!) {
+    stats(where: {watched: {_eq: true}, userId: {_eq: $userId}}) {
+      videoId
+    }
+  }
+`;
+  const response = await  queryHasuraGraphQL(operationsDoc, "watchedVideos", {userId},token);
+  console.log("🚀 ~ updateStats ~ response:", {response});
+  return response?.data?.stats; 
+}
+
+
 
 

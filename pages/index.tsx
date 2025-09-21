@@ -3,31 +3,48 @@ import styles from "../styles/Home.module.css";
 import Banner from "@/components/banner/banner";
 import NavBar from "@/components/navbar/navbar";
 import SectionCards from "@/components/card/section-cards";
-import { getPopularVideos, getVideos } from "@/lib/videos";
+import { getPopularVideos, getVideos, getWatchItAgainVideos } from "@/lib/videos";
 import { video } from "@/types";
+import { InferGetServerSidePropsType,GetServerSideProps } from "next";
+import { verifyToken } from "@/lib/utils";
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = (async ({req}) => {
   const disneyVideos = await getVideos("disney trailer");
   const productivityVideos = await getVideos("productivity");
   const travelVideos = await getVideos("travel");
   const popularVideos = await getPopularVideos();
- 
+  const token = req?.cookies?.token;
+  const userId = verifyToken(token as string);
+     
+    if (!userId) {
+      return {
+        props: {},
+        redirect: {
+          destination: "/login",
+          permanent: false,
+        },
+      };
+    }
+  console.log("🚀 ~ userId:", userId);
+  const watchedVideos = await getWatchItAgainVideos((token as string),userId);
+
 
   return {
     props: {
       disneyVideos,
       productivityVideos,
       travelVideos,
-      popularVideos
+      popularVideos,
+      watchedVideos
     },
   };
-};
-export default function Home({disneyVideos, productivityVideos, travelVideos,popularVideos}: 
-{
-  disneyVideos: video[],
-  productivityVideos: video[], 
-  travelVideos: video[],
-  popularVideos: video[]}) {
+}) satisfies GetServerSideProps<
+  { disneyVideos: video[], productivityVideos: video[], 
+    travelVideos: video[],popularVideos: video[],watchedVideos: video[] }>;
+export default function Home(
+  {disneyVideos, productivityVideos, travelVideos,popularVideos,watchedVideos}: 
+  InferGetServerSidePropsType<typeof getServerSideProps>
+) {
   return (
     <div className={styles.container}>
       <Head>
@@ -42,9 +59,11 @@ export default function Home({disneyVideos, productivityVideos, travelVideos,pop
           subTitle="Starts at EGP 100. Cancel anytime. Ready to watch? " imageUrl="/static/background.webp" />
         <div className={styles.sectionWrapper}>
           <SectionCards title="Disney" size="large" videos={disneyVideos}/>
+          <SectionCards title="Watch it again" size={"small"} videos={watchedVideos}/>
           <SectionCards title="Travel" size="small" videos={travelVideos}/>
           <SectionCards title="Productivity" size={"medium"} videos={productivityVideos}/>
-          <SectionCards id="popular" title="Popular" size={"small"} videos={popularVideos}/>
+          <SectionCards title="Popular" size={"small"} videos={popularVideos}/>
+
 
         </div>
       </div>
