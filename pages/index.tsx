@@ -16,16 +16,15 @@ export const getServerSideProps = (async ({req}) => {
   const token = req?.cookies?.token;
   const userId = verifyToken(token as string);
      
-    if (!userId) {
-      return {
-        props: {},
-        redirect: {
-          destination: "/login",
-          permanent: false,
-        },
-      };
-    }
-  console.log("🚀 ~ userId:", userId);
+  if (!userId) {
+    return {
+      props: {},
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
   const watchedVideos = await getWatchItAgainVideos((token as string),userId);
 
 
@@ -63,8 +62,6 @@ export default function Home(
           <SectionCards title="Travel" size="small" videos={travelVideos}/>
           <SectionCards title="Productivity" size={"medium"} videos={productivityVideos}/>
           <SectionCards title="Popular" size={"small"} videos={popularVideos}/>
-
-
         </div>
       </div>
     </div>

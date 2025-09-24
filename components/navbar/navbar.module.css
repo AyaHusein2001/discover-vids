@@ -15,6 +15,7 @@
   padding-right: 1rem /* 16px */;
   display: flex;
   padding: 1.25rem /* 20px */;
+  z-index: 150;
 }
 
 .logoLink {

@@ -11,3 +11,12 @@ export const setTokenCookie = (token: string,res: any) => {
 
   res.setHeader("Set-Cookie", setCookie);
 };
+
+export const deleteTokenCookie = (res: any) => {
+  const setCookie = cookie.serialize("token","", {
+    maxAge: -1,
+    path: "/",
+  });
+
+  res.setHeader("Set-Cookie", setCookie);
+};

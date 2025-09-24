@@ -5,6 +5,8 @@ import Image from "next/image";
 import { magic } from "@/lib/magic-client";
 const NavBar = () => {
   const [usrEmail, setUsrEmail] = useState("");
+  const [didToken, setDidToken] = useState("");
+
   useEffect(() => {
     const getEmail = async () => {
       if (!magic) {
@@ -13,8 +15,9 @@ const NavBar = () => {
       }
       try {
         const { email } = await magic.user.getInfo();
-        const didToken = await magic.user.getIdToken();
-        console.log("🚀 ~ getEmail ~ didToken:", {didToken});
+        const idToken = await magic.user.getIdToken();
+        setDidToken(idToken);
+        console.log("🚀 ~ getEmail ~ didToken:", {idToken});
         if (email) {
           setUsrEmail(email as string);
         }
@@ -47,7 +50,16 @@ const NavBar = () => {
       return;
     }
     try {
-      await magic.user.logout();
+      await fetch("/api/logout",{
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${didToken}`,
+          "Content-Type": "application/json",
+        }
+      });
+      console.log("User logged out");
+      console.log("User logged out 2");
+
       console.log(await magic.user.isLoggedIn());
     } catch (err) {
       console.error("Failed to logout:", err);
