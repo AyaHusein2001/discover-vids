@@ -15,7 +15,6 @@ export  const  getCommonVideos =  async (url: string) => {
   try { 
     const isDev = process.env.DEVELOPMENT;
     const data = isDev ? videoTestData : await fetchVideos(url);
-    console.log("🚀 ~ getCommonVideos ~ data:", data?.items[0]?.statistics);
     if (data?.error) {
       console.log("YouTube API Error", data.error);
 
@@ -60,7 +59,6 @@ export const getYoutubeVideoById = (id: string) => {
 
 export const getWatchItAgainVideos = async (userId: string, token: string) => {
   const videos = await watchedVideos(userId, token);
-  console.log("🚀 ~ getWatchItAgainVideos ~ videos:", videos);
   return (
     videos?.map((video: video) => {
       return {

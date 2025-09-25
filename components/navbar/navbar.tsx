@@ -45,10 +45,6 @@ const NavBar = () => {
   };
   const handleSignOut = async (e:any) => {
     e.preventDefault();
-    if (!magic) {
-      console.error("Magic instance is not initialized");
-      return;
-    }
     try {
       await fetch("/api/logout",{
         method: "POST",
@@ -57,10 +53,7 @@ const NavBar = () => {
           "Content-Type": "application/json",
         }
       });
-      console.log("User logged out");
-      console.log("User logged out 2");
 
-      console.log(await magic.user.isLoggedIn());
     } catch (err) {
       console.error("Failed to logout:", err);
     }

@@ -17,7 +17,6 @@ export default async function handler(
     if (videoId) {
 
       const userId = verifyToken(token);
-      console.log("🚀 ~ handler ~ userId:", userId);
       const findVideo = await findVideoIdByUser(token,
         userId,videoId);
       const doesStateExist = findVideo?.length > 0;

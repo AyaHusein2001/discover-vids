@@ -16,11 +16,8 @@ export default async function handler(
 
       const auth = req.headers.authorization;
       const didToken = auth?.substring(7);
-      //invoke magic
       const metaData = await magic.users.getMetadataByToken(didToken as string);
-      console.log("🚀 ~ handler ~ metaData:", metaData);
     
-      // generate jwt
       const token = jwt.sign(
         {
           ...metaData,
