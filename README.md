@@ -1,28 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# 🎬 Netflix Clone with YouTube API
 
-## Getting Started
+This project is a **Netflix-style video streaming app** built with the **YouTube API**, featuring authentication, database integration, and personalized video tracking.  
 
-First, run the development server:
+Users can sign up, log in, browse videos, like/dislike content, and access their watch history through a clean and modern UI.
 
+---
+
+## 🚀 Features
+- 🔑 **Authentication** with [Magic.link](https://magic.link/)  
+- 🗄️ **Database & API** powered by [Hasura](https://hasura.io/)  
+- 📺 **YouTube API Integration** for fetching trending and popular videos  
+- 👍 **Likes & Dislikes Tracking** per user  
+- 🔁 **"Watch It Again" Section** based on user history  
+- ⭐ **Popular & Recommended Videos** curated dynamically  
+- 🎨 **Netflix-inspired UI/UX**
+
+---
+
+## 🛠️ Tech Stack
+- **Frontend:** React / Next.js  
+- **Auth:** Magic.link  
+- **Database & API:** Hasura (GraphQL)  
+- **Video Data:** YouTube Data API v3  
+
+---
+
+
+
+## ⚙️ Getting Started
+
+### 1. Clone the repo
 ```bash
-npm run dev
+git clone https://github.com/your-username/netflix-youtube-clone.git
+cd netflix-youtube-clone
+```
+### 2. Install dependencies
+```
+npm install
+```
 # or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+yarn install
 ```
 
+### 3. Set up environment variables
+
+Create a .env.local file with the following:
+```
+NEXT_PUBLIC_YOUTUBE_API_KEY=your_youtube_api_key
+NEXT_PUBLIC_MAGIC_API_KEY=your_magic_publishable_key
+HASURA_GRAPHQL_ENDPOINT=https://your-hasura-instance.herokuapp.com/v1/graphql
+HASURA_ADMIN_SECRET=your_hasura_secret
+```
+
+### 4. Run the app
+```
+npm run dev
+```
+App will be available at http://localhost:3000
+
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 ## Learn More
 
